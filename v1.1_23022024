@@ -1,0 +1,130 @@
+import os
+import requests
+
+
+import time
+import pandas as pd
+
+import pdfquery
+
+
+
+
+PDF_FOLDER_PATH = "/home/andre/Downloads/raspagem"
+
+
+def download_pdf_file(url: str) -> bool:
+    """Download PDF from given URL to local directory.
+
+    :param url: The url of the PDF file to be downloaded
+    :return: True if PDF file was successfully downloaded, otherwise False.
+    """
+
+    # Request URL and get response object
+    response = requests.get(url, stream=True)
+
+    # isolate PDF filename from URL
+    pdf_file_name = ("jogo_" + os.path.basename(url)[3:]).replace("b","")
+    pdf_file_name = ("jogo_" + os.path.basename(url)[3:]).replace("b","")
+    if response.status_code == 200:
+        # Save in PDF_FOLDER_PATH
+        path = PDF_FOLDER_PATH
+        filepath = os.path.join(path, pdf_file_name)
+        with open(filepath, 'wb') as pdf_object:
+            pdf_object.write(response.content)
+            print(f'{pdf_file_name} was successfully saved!')
+            pdf_object.close()
+            return True
+    else:
+        print(f'Uh oh! Could not download {pdf_file_name},')
+
+
+
+def pdfscrape_pattern1(pdf, pagecount):
+  #Extracting each relevant information individually
+  for count in range(pagecount - 1):
+    if pdf.pq('LTTextLineHorizontal:contains("{}")'.format("ALUGUEIS E SEGUROS")):
+      index = 3
+    else: 
+      index = 0
+
+  total =  pdf.pq('LTTextLineHorizontal:contains("{}")'.format("TOTAL"))[index] 
+  x0 = float(total.get('x0',0)) + 156.4
+  y0 = float(total.get('y0',0))
+  x1 = float(total.get('x1',0)) + 155.41
+  y1 = float(total.get('y1',0))
+  total_disponivel = pdf.pq('LTTextLineHorizontal:overlaps_bbox("%s, %s, %s, %s")' % (x0, y0, x1, y1)).text().replace(".","")
+
+  x0 = float(total.get('x0',0)) + 269.79
+  y0 = float(total.get('y0',0))
+  x1 = float(total.get('x1',0)) + 268.8
+  y1 = float(total.get('y1',0))
+  total_vendidos = pdf.pq('LTTextLineHorizontal:overlaps_bbox("%s, %s, %s, %s")' % (x0, y0, x1, y1)).text().replace(".","")
+
+  x0 = float(total.get('x0',0)) + 387.83
+  y0 = float(total.get('y0',0))
+  x1 = float(total.get('x1',0)) + 398.516
+  y1 = float(total.get('y1',0))
+  renda = pdf.pq('LTTextLineHorizontal:overlaps_bbox("%s, %s, %s, %s")' % (x0, y0, x1, y1)).text().replace(".","").replace(",",".")
+
+  numero_jogo =  pdf.pq('LTTextLineHorizontal:contains("{}")'.format("RODADA"))[0] 
+  x0 = float(numero_jogo.get('x0',0)) + 104.98
+  y0 = float(numero_jogo.get('y0',0))
+  x1 = float(numero_jogo.get('x1',0)) + 65.101
+  y1 = float(numero_jogo.get('y1',0))
+  info_jogo = pdf.pq('LTTextLineHorizontal:overlaps_bbox("%s, %s, %s, %s")' % (x0, y0, x1, y1)).text()
+
+  rodada = info_jogo.split("/")[0]
+  partida = info_jogo.split("/")[1]
+
+
+  competicao = pdf.pq('LTTextLineHorizontal:overlaps_bbox("108.42, 740.541, 231.732, 747.541")').text()
+
+  jogo = pdf.pq('LTTextLineHorizontal:overlaps_bbox("75.17, 726.371, 264.982, 733.371")').text()
+
+  time_casa = jogo.split("X")[0]
+  time_fora = jogo.split("X")[1]
+
+  #Combined all relevant info into a single observation
+
+  page = pd.DataFrame({
+      'Competição': competicao,
+      'Rodada': int(rodada),
+      'Partida': int(partida),
+      "Mandante": time_casa,
+      "Visitante": time_fora,
+      "Ingressos Disponíveis": int(total_disponivel),
+      "Ingressos Vendidos": int(total_vendidos),
+      "Renda": float(renda),
+      }, index=[0])
+  return(page) 
+
+
+partidas = [66,69]
+tabela_publico = pd.DataFrame()
+
+for partida in partidas:
+    URL = f'https://conteudo.cbf.com.br/sumulas/2023/142{partida}b.pdf'
+    download_pdf_file(URL)
+
+    path = PDF_FOLDER_PATH
+    with open(os.path.join(path, f'jogo_{partida}.pdf'), 'rb') as pdf_path:
+        pdf = pdfquery.PDFQuery(pdf_path)
+        pdf.load()
+        pdf.tree.write(f'boletim_{partida}.txt', pretty_print = True)
+
+        pagecount = pdf.doc.catalog['Pages'].resolve()['Count']
+        for p in range(pagecount - 1):
+            pdf.load(p)
+            page = pdfscrape_pattern1(pdf, pagecount) 
+            tabela_publico = tabela_publico.append(page, ignore_index=True).sort_values('Partida')
+
+    remove_pdf_path = os.path.join(PDF_FOLDER_PATH, f'jogo_{partida}.pdf')
+    remove_boletim_path = os.path.join(os.getcwd(), f'boletim_{partida}.txt')
+    os.remove(remove_pdf_path)
+    os.remove(remove_boletim_path)
+
+# tabela_publico = tabela_publico.reset_index(drop=True, inplace=True)
+
+tabela_publico.to_csv('/home/andre/Downloads/raspagem/tabela_publico.csv', mode='a',header=False, index=False)
+
