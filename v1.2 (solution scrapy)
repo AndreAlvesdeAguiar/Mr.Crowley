@@ -1,0 +1,37 @@
+import PyPDF2
+import requests
+import pandas as pd
+
+# Função para extrair texto do PDF
+def extract_text_from_pdf(url):
+    response = requests.get(url)
+    with open("temp.pdf", "wb") as pdf_file:
+        pdf_file.write(response.content)
+
+    with open("temp.pdf", "rb") as pdf_file:
+        reader = PyPDF2.PdfFileReader(pdf_file)
+        num_pages = reader.numPages
+        text = ""
+        for page_num in range(num_pages):
+            page = reader.getPage(page_num)
+            text += page.extractText()
+    return text
+
+# URL do PDF
+url = "https://conteudo.cbf.com.br/sumulas/2023/142375b.pdf"
+
+# Extrair texto do PDF
+text = extract_text_from_pdf(url)
+
+# Organizar os dados em uma lista de dicionários
+data = []
+current_row = {}
+for line in text.split('\n'):
+    if line.strip():  # Verifica se a linha não está em branco
+        data.append({'Texto': line.strip()})
+
+# Criar DataFrame
+df = pd.DataFrame(data)
+
+# Exibir DataFrame
+print(df)
