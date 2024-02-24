@@ -1,0 +1,44 @@
+from PIL import Image
+import pytesseract
+from pdf2image import convert_from_path
+import os
+import PyPDF2
+
+def extrair_texto_pdf(caminho_pdf):
+    with open(caminho_pdf, "rb") as arquivo_pdf:
+        leitor_pdf = PyPDF2.PdfFileReader(arquivo_pdf)
+        texto = ""
+        for pagina in range(leitor_pdf.numPages):
+            texto += leitor_pdf.getPage(pagina).extractText()
+    return texto
+
+def extrair_texto_ocr(image_path):
+    # Usa OCR para extrair texto da imagem
+    extracted_text = pytesseract.image_to_string(Image.open(image_path))
+    return extracted_text
+
+def processar_pdf(caminho_pdf):
+    texto_pdf = extrair_texto_pdf(caminho_pdf)
+    # Verifica se o texto extraído do PDF é vazio
+    if not texto_pdf.strip():
+        # Se o texto extraído for vazio, usa OCR
+        pages = convert_from_path(caminho_pdf, 300)
+        for i, page in enumerate(pages):
+            image_path = f"page_{i}.png"
+            page.save(image_path, "PNG")
+            extracted_text = extrair_texto_ocr(image_path)
+            print(f"Texto extraído da página {i + 1}:\n{extracted_text}")
+            os.remove(image_path)
+    else:
+        # Se o texto extraído não for vazio, imprime o texto do PDF
+        print(texto_pdf)
+
+def ordenar_jogos(arquivo):
+    return int(arquivo.split("_")[1].split(".")[0])
+
+caminho_pasta = "/home/andre/Downloads/raspagem/2023/"
+arquivos_pdf = sorted([arquivo for arquivo in os.listdir(caminho_pasta) if arquivo.endswith(".pdf")], key=ordenar_jogos)
+for arquivo in arquivos_pdf:
+    caminho_pdf = os.path.join(caminho_pasta, arquivo)
+    print(f"Processando o arquivo: {caminho_pdf}")
+    processar_pdf(caminho_pdf)
