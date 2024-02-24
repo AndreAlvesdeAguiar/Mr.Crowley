@@ -1,0 +1,29 @@
+import os
+import pandas as pd
+import PyPDF2
+
+# Caminho do arquivo PDF
+caminho_pdf = "/home/andre/Downloads/raspagem/2023/jogo_1.pdf"
+
+def extrair_texto_pdf(caminho_pdf):
+    with open(caminho_pdf, "rb") as arquivo_pdf:
+        leitor_pdf = PyPDF2.PdfFileReader(arquivo_pdf)
+        texto = ""
+        for pagina in range(leitor_pdf.numPages):
+            texto += leitor_pdf.getPage(pagina).extractText()
+    return texto
+
+
+texto_pdf = extrair_texto_pdf(caminho_pdf)
+
+# Dividir o texto em linhas
+linhas = texto_pdf.split("\n")
+
+# Criar um DataFrame
+df = pd.DataFrame(linhas, columns=["Texto"])
+
+# Visualizar as primeiras linhas do DataFrame
+print(df)
+
+
+(* validado problema na divergencia de tipo de arquivo de cada sumula. *)
