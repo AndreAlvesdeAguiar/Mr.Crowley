@@ -1,3 +1,6 @@
+
+#--------------> C1 - CAMINHO PARA LEITURA PDF SELECIONAVEL 
+
 import os
 import pandas as pd
 import PyPDF2
@@ -27,3 +30,37 @@ print(df)
 
 
 (* validado problema na divergencia de tipo de arquivo de cada sumula. *)
+
+
+
+#--------------> C2 - CAMINHO PARA LEITURA IMAGEM 
+
+
+from PIL import Image
+import pytesseract
+from pdf2image import convert_from_path
+import os
+
+# Caminho para o arquivo PDF escaneado
+pdf_path = "/home/andre/Downloads/raspagem/2023/jogo_1.pdf"
+
+# Converte o PDF em uma lista de imagens
+pages = convert_from_path(pdf_path, 300)  # Ajuste o valor de DPI conforme necessário
+
+# Loop pelas páginas e extrai o texto usando OCR
+for i, page in enumerate(pages):
+    # Salva a página como imagem temporária
+    image_path = f"page_{i}.png"
+    page.save(image_path, "PNG")
+    
+    # Usa OCR para extrair texto da imagem
+    extracted_text = pytesseract.image_to_string(Image.open(image_path))
+    
+    # Imprime o texto extraído
+    print(f"Texto extraído da página {i + 1}:\n{extracted_text}")
+    
+    # Remove a imagem temporária
+    os.remove(image_path)
+
+
+#----------------<==> QUANDO BATE EM C1 E É NÃO SELECIONAVEL IMAGEM ELE RETORNA TEXTO ZERO.
