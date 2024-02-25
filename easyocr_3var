@@ -1,0 +1,61 @@
+import easyocr
+from pdf2image import convert_from_path
+import pandas as pd
+
+# Função para extrair informações de texto
+def extract_information(resultados):
+    data = None
+    mandante = None
+    visitante = None
+    estadio = None  # Adicionando variável para o estádio
+    for (bbox, text, prob) in resultados:
+        if 'Data:' in text:
+            data = text.split(':')[1].strip()
+        elif 'Jogo:' in text:
+            mandante, visitante = [item.strip() for item in text.split(':')[1].split('x')]
+        elif 'ESTÁDIO:' in text:  # Verificando se 'ESTÁDIO:' está presente
+            estadio = text.split(':')[1].strip()
+    return data, mandante, visitante, estadio  # Retornando os quatro valores
+
+# Caminho para o arquivo PDF
+caminho_pdf = '/home/andre/Downloads/raspagem/2023/jogo_3.pdf'
+
+# Extrair imagens das páginas do PDF
+imagens = convert_from_path(caminho_pdf)
+
+# Inicializar EasyOCR
+reader = easyocr.Reader(['pt']) # Especifique o idioma
+
+# Inicializar lista para armazenar os resultados
+resultados = []
+
+# Processar cada imagem e extrair texto
+for imagem in imagens:
+    imagem.save('temp.png')  # Salvar a imagem temporariamente
+    resultado = reader.readtext('temp.png')  # Fornecer o caminho da imagem
+    resultados.extend(resultado)
+
+# Extrair informações relevantes
+data, mandante, visitante, estadio = extract_information(resultados)
+
+# Criar DataFrame com os dados
+df = pd.DataFrame({'Data': [data], 'Mandante': [mandante], 'Visitante': [visitante], 'Estádio': [estadio]})
+
+# Imprimir DataFrame
+print(df)
+
+
+#################### problemas
+
+cenario jogo_3.pdf (sumula tipo A)
+andre@andre-Inspiron-5557:~/Downloads/raspagem/2023$ python3 script_teste4.py
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+               Data   Mandante        Visitante Estádio
+0  15/04/2023 16.00  Palmeiras  Cuiabá SAF (MT)    None
+
+cenario jogo_2.pdf (sumula tipo B)
+andre@andre-Inspiron-5557:~/Downloads/raspagem/2023$ python3 script_teste4.py
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+   Data Mandante Visitante        Estádio
+0  None     None      None  Nilton Santos
+
