@@ -1,0 +1,316 @@
+import easyocr
+from pdf2image import convert_from_path
+
+# Caminho para o arquivo PDF
+caminho_pdf = 'jogo_3.pdf'
+
+# Extrair imagens das páginas do PDF
+imagens = convert_from_path(caminho_pdf)
+
+# Inicializar EasyOCR
+reader = easyocr.Reader(['pt']) # Especifique o idioma
+
+# Processar cada imagem e extrair texto
+for imagem in imagens:
+    imagem.save('temp.png')  # Salvar a imagem temporariamente
+    resultado = reader.readtext('temp.png')  # Fornecer o caminho da imagem
+    for (bbox, text, prob) in resultado:
+        print(f'Texto: {text}, Probabilidade: {prob}')
+
+
+
+
+<----------------------->
+
+andre@andre-Inspiron-5557:~/Downloads/raspagem/2023$ python3 script_teste3.py
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+Texto: FE3, Probabilidade: 0.22045069632781297
+Texto: FEDERAÇÃO DE FUTEBOL DO ESTADO DO RIO DE JANEIRO, Probabilidade: 0.7692261669787833
+Texto: BOLETIM FINANCEIRO DO JOGO REALIZADO EM, Probabilidade: 0.6660048406443251
+Texto: 15 de abril de 2023, Probabilidade: 0.915410316298311
+Texto: JOGO:, Probabilidade: 0.8335290325666196
+Texto: SAF BOTAFOGO, Probabilidade: 0.9442901539836005
+Texto: SÃO PAULO FC, Probabilidade: 0.9810659249822811
+Texto: ESTÁDIO: Nilton Santos, Probabilidade: 0.8131539095882615
+Texto: BF, Probabilidade: 0.9999141058032305
+Texto: Competição (Espécie):, Probabilidade: 0.7388510550130379
+Texto: OFICIAL, Probabilidade: 0.9995288945248719
+Texto: AMISTOSO, Probabilidade: 0.9988520261725822
+Texto: Categoria, Probabilidade: 0.9997510357705481
+Texto: Internacional, Probabilidade: 0.9814321860401709
+Texto: Interestadual, Probabilidade: 0.9830788577083736
+Texto: Local, Probabilidade: 0.9989831188933527
+Texto: LOCAL:, Probabilidade: 0.9997671223646828
+Texto: 01, Probabilidade: 0.9999292783206819
+Texto: Competição:, Probabilidade: 0.9997679705157572
+Texto: CAMPEONATO BRASILEIRO SÉRIE A 2023, Probabilidade: 0.8003544046257096
+Texto: Rio de Janeiro - RJ, Probabilidade: 0.7234697549418947
+Texto: INGREsSOS, Probabilidade: 0.627191250889133
+Texto: LOCALZZACAO, Probabilidade: 0.6174339574579424
+Texto: DISPONIVEL, Probabilidade: 0.9932242816193434
+Texto: DEVOLVIDOS, Probabilidade: 0.808897610930745
+Texto: UTILIZADOS, Probabilidade: 0.9779836052320366
+Texto: PREÇO, Probabilidade: 0.4226848033290948
+Texto: ARRECADAÇAO, Probabilidade: 0.7894395057868866
+Texto: NORTE INTEIRA, Probabilidade: 0.9911320770064134
+Texto: 879, Probabilidade: 0.999965656146822
+Texto: 118, Probabilidade: 0.9999680519104004
+Texto: 761, Probabilidade: 0.9999959392956953
+Texto: 60,00, Probabilidade: 0.9991801281531862
+Texto: 45.660,00, Probabilidade: 0.7789997284776797
+Texto: NORTE MEIA, Probabilidade: 0.9906049973344024
+Texto: 1.422, Probabilidade: 0.9745309216404946
+Texto: 90, Probabilidade: 0.9997693802345553
+Texto: 1.332, Probabilidade: 0.6351945078016554
+Texto: 30,00, Probabilidade: 0.999714562662924
+Texto: 39.960,00, Probabilidade: 0.9971919916662141
+Texto: NORTE SÓCIO BRANCO, Probabilidade: 0.9931931340776018
+Texto: 629, Probabilidade: 0.999958016553673
+Texto: 30, Probabilidade: 0.9998883126783176
+Texto: 599, Probabilidade: 0.9997138978162343
+Texto: 30,00, Probabilidade: 0.6007074794557498
+Texto: 17.970,00, Probabilidade: 0.9428574267374744
+Texto: NORTE SÓCIO PRETO, Probabilidade: 0.7416652020620025
+Texto: 189, Probabilidade: 0.9999927044989317
+Texto: 166, Probabilidade: 0.9190794825553894
+Texto: 30,00, Probabilidade: 0.9991837310440814
+Texto: 4.980,00, Probabilidade: 0.8792402410793657
+Texto: NORTE SÓCIO GLORIOSO, Probabilidade: 0.9171975508424671
+Texto: 34, Probabilidade: 0.7948716003095178
+Texto: 30, Probabilidade: 0.9989374747697443
+Texto: 30,00, Probabilidade: 0.9996642824460007
+Texto: 900,00, Probabilidade: 0.718168152203076
+Texto: NORTE SÓCIO ALVINEGRO, Probabilidade: 0.9538003076692013
+Texto: 30,00, Probabilidade: 0.9953742773957224
+Texto: 90,00, Probabilidade: 0.9983810899871363
+Texto: LESTE INFERIOR INTEIRA, Probabilidade: 0.9898855899222627
+Texto: 130, Probabilidade: 0.9904868602752686
+Texto: 1, Probabilidade: 0.05719686473594354
+Texto: 123, Probabilidade: 0.7607775121217399
+Texto: 200,00, Probabilidade: 0.973390972228693
+Texto: 24.600,00, Probabilidade: 0.6808512545839418
+Texto: LESTE INFERIOR MEIA, Probabilidade: 0.9395859269836324
+Texto: 325, Probabilidade: 0.9999978664093272
+Texto: 308, Probabilidade: 0.8572582006454468
+Texto: 100,00, Probabilidade: 0.9985540147232923
+Texto: 30.800,00, Probabilidade: 0.9973141598853437
+Texto: LESTE INFERIOR BRANCO, Probabilidade: 0.8279814368594519
+Texto: 138, Probabilidade: 0.9999992429193688
+Texto: 134, Probabilidade: 0.8962127566337585
+Texto: 100,00, Probabilidade: 0.7700557839990083
+Texto: 13.400,00, Probabilidade: 0.9824785199370757
+Texto: LESTE INFERIOR PRETO, Probabilidade: 0.9102834498666109
+Texto: 101, Probabilidade: 0.9999626966638634
+Texto: 96, Probabilidade: 0.9978132794936198
+Texto: 100,00, Probabilidade: 0.9899445619687471
+Texto: 9.600,00, Probabilidade: 0.8440148203803413
+Texto: LESTE INFERIOR GLORIOSO, Probabilidade: 0.7121336269957774
+Texto: 65, Probabilidade: 0.9999572633630879
+Texto: 59, Probabilidade: 0.9993128226626171
+Texto: 100,00, Probabilidade: 0.9920399623064726
+Texto: 5.900,00, Probabilidade: 0.9255026764070524
+Texto: LESTE INFERIOR SÓCIO ALVINEGRO, Probabilidade: 0.850199447889
+Texto: 12, Probabilidade: 0.9965432140860161
+Texto: 100,00, Probabilidade: 0.9640640257008664
+Texto: 800,00, Probabilidade: 0.9908356550545517
+Texto: OESTE INFERIOR INTEIRA, Probabilidade: 0.9780806088913248
+Texto: 88, Probabilidade: 0.9914397037915783
+Texto: 6, Probabilidade: 0.9769623325542511
+Texto: 82, Probabilidade: 0.999994015152757
+Texto: 200,00, Probabilidade: 0.9861131491699946
+Texto: 16.400,00, Probabilidade: 0.9858970145478302
+Texto: OESTE INFERIOR MEIA, Probabilidade: 0.9236258456893525
+Texto: 237, Probabilidade: 0.7352931571223582
+Texto: 228, Probabilidade: 0.9406612515449524
+Texto: 100,00, Probabilidade: 0.6619608380012479
+Texto: 22.800,00, Probabilidade: 0.7475384958524706
+Texto: :, Probabilidade: 0.49243588591151877
+Texto: OESTE INFERIOR BRANCO, Probabilidade: 0.9561883638708731
+Texto: 69, Probabilidade: 0.9999883674896276
+Texto: 5, Probabilidade: 0.9999947547981378
+Texto: 64, Probabilidade: 0.9999204276773073
+Texto: 100,00, Probabilidade: 0.9971296273892309
+Texto: 6.400,00, Probabilidade: 0.8298366443240701
+Texto: OESTE INFERIOR PRETO, Probabilidade: 0.9957453692884252
+Texto: 35, Probabilidade: 0.9982436419749522
+Texto: 35, Probabilidade: 0.9973301856149425
+Texto: 100,00, Probabilidade: 0.9960966536695179
+Texto: 3.500,00, Probabilidade: 0.9695549459731315
+Texto: OESTE INFERIOR GLORIOSO, Probabilidade: 0.9952423717119068
+Texto: 58, Probabilidade: 0.9999426807671866
+Texto: 5, Probabilidade: 0.7859306534342636
+Texto: 53, Probabilidade: 0.9999850800482271
+Texto: 100,00, Probabilidade: 0.5589571878079087
+Texto: 5.300,00, Probabilidade: 0.7233055447247847
+Texto: IOESTE INFERIOR SÓCIO ALVINEGRO, Probabilidade: 0.7040255382636792
+Texto: 100,00, Probabilidade: 0.6730746400956087
+Texto: 400,00, Probabilidade: 0.7752975086994008
+Texto: SUL VISITANTE, Probabilidade: 0.9826249483388461
+Texto: 1.562, Probabilidade: 0.9993840105810848
+Texto: 1.218, Probabilidade: 0.9996247284142287
+Texto: 60,00, Probabilidade: 0.9374442342413474
+Texto: 73.080,00, Probabilidade: 0.875827177327434
+Texto: SUL VISITANTE MEIA, Probabilidade: 0.8630489716702495
+Texto: 144, Probabilidade: 0.9999971781544015
+Texto: 123, Probabilidade: 0.9999966963759913
+Texto: 30,00, Probabilidade: 0.9988824655596177
+Texto: 3.690,00, Probabilidade: 0.994408240760365
+Texto: NORTE SÓCIO GLORIOSO 1009, Probabilidade: 0.741986026182473
+Texto: 59, Probabilidade: 0.9999913177602461
+Texto: 9, Probabilidade: 0.17143677146067038
+Texto: 45, Probabilidade: 0.9999983141264758
+Texto: 30,00, Probabilidade: 0.9977962507070177
+Texto: 1.350,00, Probabilidade: 0.7728265084939632
+Texto: NORTE SÓCIO ALVINEGRO 100%, Probabilidade: 0.9179125353821768
+Texto: 326, Probabilidade: 0.9999912591646607
+Texto: 252, Probabilidade: 0.5990610080411205
+Texto: 30,00, Probabilidade: 0.9939476899405233
+Texto: 7.560,00, Probabilidade: 0.8787153352266834
+Texto: LESTE INFERIOR GLORIOSO 10096, Probabilidade: 0.7214191898831237
+Texto: 478, Probabilidade: 0.9999996558724309
+Texto: 96, Probabilidade: 0.9997520169501456
+Texto: 382, Probabilidade: 0.9999800324440002
+Texto: 100,001, Probabilidade: 0.4392629035726092
+Texto: 38.200,001, Probabilidade: 0.18715262350228778
+Texto: [LESTE INFERIOR SÓCIO ALVINEGRO 1009, Probabilidade: 0.7900030706380229
+Texto: 2.896, Probabilidade: 0.7579910643953556
+Texto: 436, Probabilidade: 0.9999986234898187
+Texto: 2.460, Probabilidade: 0.9995675727904578
+Texto: 100,00, Probabilidade: 0.9946562347083553
+Texto: 246.000,00, Probabilidade: 0.8604547209974465
+Texto: OESTE INFERIOR GLORIOSO 1009, Probabilidade: 0.8278786930471318
+Texto: 245, Probabilidade: 0.9999959392956953
+Texto: 66, Probabilidade: 0.9458674781412909
+Texto: 179, Probabilidade: 0.999996283423093
+Texto: 100,00, Probabilidade: 0.9790228431316791
+Texto: 17.900,005, Probabilidade: 0.4004081046253024
+Texto: OESTEINFERIOR SÓCIO ALVINEGRO 10036, Probabilidade: 0.7685099672752301
+Texto: 658, Probabilidade: 0.9999871984651112
+Texto: 80, Probabilidade: 0.9705565342942596
+Texto: 578, Probabilidade: 0.9999972469798912
+Texto: 100,00, Probabilidade: 0.9917606650074234
+Texto: 57.800,00, Probabilidade: 0.9279070788571537
+Texto: INGRESSO PROMOCIONAL, Probabilidade: 0.900744884818239
+Texto: 1.495, Probabilidade: 0.9996052686442892
+Texto: 856, Probabilidade: 0.9999598060072228
+Texto: 639, Probabilidade: 0.999919268107034
+Texto: 30,00, Probabilidade: 0.9953891833126136
+Texto: 19.170,00, Probabilidade: 0.7450245957327877
+Texto: CAMAROTE PROMOCIONAL, Probabilidade: 0.8918468983508607
+Texto: 657, Probabilidade: 0.9999958016447406
+Texto: 657, Probabilidade: 0.9999934615788997
+Texto: 30,00, Probabilidade: 0.9993140832501642
+Texto: 19.710,00, Probabilidade: 0.7601342669134918
+Texto: IGRATUIDADES POR FORÇA DE LEI ESTADUAL, Probabilidade: 0.8043184601773258
+Texto: 1.387, Probabilidade: 0.9882461937946825
+Texto: 297, Probabilidade: 0.9999922915462542
+Texto: 1.090, Probabilidade: 0.9953183362620608
+Texto: 0,0O, Probabilidade: 0.27328205989540183
+Texto: TOTAIS, Probabilidade: 0.999105605504103
+Texto: 14.329, Probabilidade: 0.9860194854007219
+Texto: 2.621, Probabilidade: 0.9977856091251454
+Texto: 11.708, Probabilidade: 0.9919172691994951
+Texto: RECEITA, Probabilidade: 0.9997392899401795
+Texto: RP, Probabilidade: 0.23908755045877186
+Texto: 733.920,00, Probabilidade: 0.9952293444510636
+Texto: TAXA FERJ, Probabilidade: 0.99981954873114
+Texto: 34.752,00, Probabilidade: 0.9957341563093836
+Texto: 21 CAMAROTE PROMOCIONAL, Probabilidade: 0.5917699455091041
+Texto: 19.710,00, Probabilidade: 0.9970476152385319
+Texto: 2lInss 586 (SAF Botafogo Lei n 14.193/2021), Probabilidade: 0.5286676163971538
+Texto: 0,00, Probabilidade: 0.9971527457237244
+Texto: 22 DESPESA SÓCIO TORCEDOR, Probabilidade: 0.7897414547282031
+Texto: 375.620,00, Probabilidade: 0.8876579406387449
+Texto: 3 TAXA DE ARBITRAGEM, Probabilidade: 0.46919961013743877
+Texto: 31.380,00, Probabilidade: 0.9977172694057865
+Texto: 23, Probabilidade: 0.8991241290823342
+Texto: 4lINss 20% SI ARBITRAGEM, Probabilidade: 0.3860292251932143
+Texto: 6.276,00, Probabilidade: 0.9824380163337803
+Texto: 24, Probabilidade: 0.9991378725738929
+Texto: 5 REEMBOLSO PASSAGEM ARBITRAGEM, Probabilidade: 0.4553545961909961
+Texto: 11.167,79, Probabilidade: 0.9988013741903503
+Texto: 25, Probabilidade: 0.9999854172215584
+Texto: 6 DESPESA OPERACIONAL, Probabilidade: 0.8141199930663284
+Texto: 22.000,00, Probabilidade: 0.6143013356719125
+Texto: 26, Probabilidade: 0.9996148838220645
+Texto: INSS 209 SI DESPESA OPERACIONAL, Probabilidade: 0.49611985447284007
+Texto: 4,400,00, Probabilidade: 0.5939379728706705
+Texto: 27, Probabilidade: 0.9987955713287526
+Texto: 8 DELEGADO, Probabilidade: 0.9643987328121166
+Texto: 3.000,00, Probabilidade: 0.6917327865781168
+Texto: 28, Probabilidade: 0.9723100623821149
+Texto: 9HINSS 203 SI DELEGADO, Probabilidade: 0.5151150275129182
+Texto: 600,00, Probabilidade: 0.7802334265342686
+Texto: 29, Probabilidade: 0.9999796009862606
+Texto: 1OlCREDENCIAMENTO, Probabilidade: 0.6388484770191716
+Texto: 2.700,00, Probabilidade: 0.9924541962459448
+Texto: 30, Probabilidade: 0.9770044202313427
+Texto: 1, Probabilidade: 0.25451577119270397
+Texto: 11 sEGURO PÚBLICO PRESENTE (0,032), Probabilidade: 0.5855315382190963
+Texto: 374,66, Probabilidade: 0.7585577575629492
+Texto: 31, Probabilidade: 0.9999969654282558
+Texto: 12/coNTROLE E EXAME DE DOPING, Probabilidade: 0.5890105257227187
+Texto: 4,400,00, Probabilidade: 0.5951992722668558
+Texto: 32, Probabilidade: 0.9999932565108979
+Texto: 13 CONFECÇÃO VENDA E PRÉ VENDA DE INGRESSOS, Probabilidade: 0.5866419550505683
+Texto: 29.979,47, Probabilidade: 0.7878618042527827
+Texto: 33, Probabilidade: 0.9999956167305686
+Texto: 14 TAXA DE BOMBEIROS, Probabilidade: 0.7358002420701037
+Texto: 2.285,31, Probabilidade: 0.8355768355217185
+Texto: 34, Probabilidade: 0.9999985670074514
+Texto: 15 POSTO MÉDICO, Probabilidade: 0.9516578075366251
+Texto: 13.800,00, Probabilidade: 0.8963060615172473
+Texto: 35, Probabilidade: 0.9999911491732849
+Texto: 16 DESPESA OPERACIONAL DO ESTÁDIO, Probabilidade: 0.9506006470570229
+Texto: 234.295,00, Probabilidade: 0.7171307169559475
+Texto: 36, Probabilidade: 0.9822076547906606
+Texto: 17 SEGURANÇA PRIVADA, Probabilidade: 0.7291892928574359
+Texto: 44.321,42, Probabilidade: 0.8637915282895031
+Texto: 37, Probabilidade: 0.9999791795203197
+Texto: 18 sUPERVISÃO PROTOCOLO CBF, Probabilidade: 0.5890624332090254
+Texto: 1.400,00, Probabilidade: 0.8956427945095667
+Texto: 38, Probabilidade: 0.9999981455391691
+Texto: 19 INSS 20% SI SUPERVISÃO DE PROTOLOCO CBF, Probabilidade: 0.609525401255765
+Texto: 280,00, Probabilidade: 0.8262379332977722
+Texto: 39, Probabilidade: 0.9999897161844511
+Texto: 2OlINGRESSO PROMOCIONAL, Probabilidade: 0.7077413382284461
+Texto: 19.170,00, Probabilidade: 0.9917258406311975
+Texto: 40, Probabilidade: 0.9999248108502059
+Texto: TOTAL DAS DESPESAS, Probabilidade: 0.7394826338071425
+Texto: 861.911,65, Probabilidade: 0.8329523608280142
+Texto: 1 INSS 11% SI ARBITRAGEM, Probabilidade: 0.6707617607433523
+Texto: 629,20, Probabilidade: 0.9977192818792426
+Texto: 6IIRRF S' DELEGADO, Probabilidade: 0.3462150996072131
+Texto: 0,00, Probabilidade: 0.9838405251502991
+Texto: 2 INSS 11% S  OPERACIONAL, Probabilidade: 0.2538304931693313
+Texto: 2.079,00, Probabilidade: 0.990096486182339
+Texto: INSS 119 SI SUPERVISÃO PROTOCOLO CBF, Probabilidade: 0.5940241784952995
+Texto: 0,00, Probabilidade: 0.9830798050257874
+Texto: 4, Probabilidade: 0.2553145222322115
+Texto: 3HINSS 11% SIDELEGADO, Probabilidade: 0.6115610563267989
+Texto: 0,00, Probabilidade: 0.9919804140857075
+Texto: IRRF SI ARBITRAGEM, Probabilidade: 0.7387032541424866
+Texto: 1.296,71, Probabilidade: 0.694619236359502
+Texto: SIIRRF SI OPERACIONAL, Probabilidade: 0.28704761140895385
+Texto: 0,00, Probabilidade: 0.9813101491794501
+Texto: 10, Probabilidade: 0.999851562026531
+Texto: TOTAL, Probabilidade: 0.9996771362846049
+Texto: RETENCTES  , Probabilidade: 0.14696728677756024
+Texto: 4.004,91, Probabilidade: 0.9325935602985443
+Texto: RECEITA LíQUIDA (Receita, Probabilidade: 0.7113848011184536
+Texto: total das despesas), Probabilidade: 0.986325878855305
+Texto: -127.991,65, Probabilidade: 0.9200965105853923
+Texto: DISTRIBUIÇÃO DO RESULTADO, Probabilidade: 0.9874505814819124
+Texto: CLUBES, Probabilidade: 0.9996013995069848
+Texto: DEVE/HAVER, Probabilidade: 0.7019109790291833
+Texto: SALDO, Probabilidade: 0.5989292613658446
+Texto: 1, Probabilidade: 0.9682820946963808
+Texto: {SAF BOTAFOGO, Probabilidade: 0.7308423868151243
+Texto: -127.991,65, Probabilidade: 0.8665131746580932
+Texto: -127.991,65, Probabilidade: 0.6840288907685013
+Texto: OBSERVAÇOES EVENTUAIS:, Probabilidade: 0.8016961628126007
+Texto: Borderô elaborado tomando-se por base os dados da prestação de contas apresentada pelo clube mandante, Probabilidade: 0.4372339359575131
+Texto: SUPEBXISOR, Probabilidade: 0.785431688940154
+Texto: SAF BOTAFO6O, Probabilidade: 0.35830883008342573
+Texto: Edllardó tuiz M. Lila Barros, Probabilidade: 0.3660307310897008
+Texto: Caio Barrpco, Probabilidade: 0.8961712338543436
