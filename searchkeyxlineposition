@@ -27,7 +27,7 @@ for imagem in imagens:
 
 df = pd.DataFrame(dados, columns=['Texto'])
 
-pd.set_option('display.max_rows', 50)  # Altere o número conforme necessário
+pd.set_option('display.max_rows', None)  # Altere o número conforme necessário
 
 print(df)
 
