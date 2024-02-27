@@ -1,0 +1,66 @@
+import easyocr
+from pdf2image import convert_from_path
+import pandas as pd
+
+# Caminho para o arquivo PDF
+caminho_pdf = '/home/andre/Downloads/raspagem/2023/jogo_3.pdf'
+
+# Extrair imagens das páginas do PDF
+imagens = convert_from_path(caminho_pdf)
+
+# Inicializar EasyOCR
+reader = easyocr.Reader(['pt']) # Especifique o idioma
+
+dados = []
+
+# Processar cada imagem e extrair texto entre chaves
+for imagem in imagens:
+    imagem.save('temp.png')  # Salvar a imagem temporariamente
+    resultado = reader.readtext('temp.png')  # Fornecer o caminho da imagem
+    for (bbox, text, prob) in resultado:
+        # print(text)
+        dados.append(text)
+
+# df = pd.DataFrame(dados)
+
+
+
+df = pd.DataFrame(dados, columns=['Texto'])
+
+pd.set_option('display.max_rows', 50)  # Altere o número conforme necessário
+
+print(df)
+
+# Encontrar linhas que contenham palavras-chave e pegar informações dela e da próxima linha
+keyword_data = 'Data:'
+keyword_game = 'Jogo:'
+relevant_rows_date = df[df['Texto'].str.contains(keyword_data)]
+relevant_rows_game = df[df['Texto'].str.contains(keyword_game)]
+
+# Extrair informações da data
+if not relevant_rows_date.empty:
+    date_info = relevant_rows_date.iloc[0]['Texto'].split(': ')[1][2]
+else:
+    date_info = None
+
+# Extrair informações do jogo
+if not relevant_rows_game.empty:
+    game_info = relevant_rows_game.iloc[0]['Texto'].split(': ')[1]
+else:
+    game_info = None
+
+# Assumindo que 'df' é o seu DataFrame
+##################################################################################################################################     \/
+ ## Extrair a quinta linha
+quinta_linha = df.iloc[4] + df.iloc[5] + df.iloc[6] + df.iloc[7]
+
+# Imprimir a quinta linha
+print(quinta_linha)
+#teste com jogo_1 jogo_2 e jogo_3 
+#melhor estrategia posição ao inves de palavra chave (search key)
+#testar com mais jogos e sumulas.
+
+##################################################################################################################################   /\
+# Imprimir as informações extraídas
+print(f'Data: {date_info}')
+print(f'Jogo: {game_info}')
