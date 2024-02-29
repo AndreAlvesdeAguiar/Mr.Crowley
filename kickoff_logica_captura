@@ -13,3 +13,35 @@ JOGO_1 - 4
 JOGO_3 - 3
 JOGO_6 - 2
 JOGO_18 - 1
+
+
+regular expresion
+################################################   regular expression  
+
+import re
+
+def identificar_tipo_sumario(quinta_linha):
+    quinta_linha = str(quinta_linha)  # Converta para string, se ainda não for
+    # Defina padrões de expressão regular para cada tipo de sumário
+    padrao_tipo1 = re.compile(r"FEDERAÇÃO\s*PARANAENSE\s*DE\s*FUTEBOL", re.IGNORECASE)
+    padrao_tipo2 = re.compile(r"FMF", re.IGNORECASE)
+    padrao_tipo3 = re.compile(r"BOLETIM\s*FINANCEIRO", re.IGNORECASE)
+    padrao_tipo4 = re.compile(r"FEDERAÇÃO\s*PARANAENSE\s*DE\s*FUTEBOL", re.IGNORECASE)
+
+    # Verifique se algum padrão corresponde ao texto da quinta linha
+    if padrao_tipo1.search(quinta_linha):
+        return "Tipo 1"
+    elif padrao_tipo2.search(quinta_linha):
+        return "Tipo 2"
+    elif padrao_tipo3.search(quinta_linha):
+        return "Tipo 3"
+    elif padrao_tipo4.search(quinta_linha):
+        return "Tipo 4"
+    else:
+        return "TIPO NAO MAPEADO"
+
+# Exemplo de uso
+tipo_sumario = identificar_tipo_sumario(quinta_linha)
+print("Tipo de Sumário:", tipo_sumario)
+
+################################################
