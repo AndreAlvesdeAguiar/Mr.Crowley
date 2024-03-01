@@ -45,3 +45,40 @@ tipo_sumario = identificar_tipo_sumario(quinta_linha)
 print("Tipo de Sumário:", tipo_sumario)
 
 ################################################
+
+df_novo = pd.DataFrame({
+    'A': df.iloc[0],  # Utilizando os valores da linha 0
+    'B': df.iloc[1],  # Utilizando os valores da linha 1
+    'C': df.iloc[2]   # Utilizando os valores da linha 2
+})
+
+print(df_novo)
+
+# Exportar o DataFrame como uma tabela Excel
+nome_arquivo = 'tabela_excel.xlsx'
+df_novo.to_excel(nome_arquivo, index=False)
+
+print(f'Tabela exportada como "{nome_arquivo}"')
+
+Selection deleted
+df_novo = pd.DataFrame({
+    'A': df.iloc[0],  # Utilizando os valores da linha 0
+    'B': df.iloc[1],  # Utilizando os valores da linha 1
+    'C': df.iloc[2]   # Utilizando os valores da linha 2
+})
+
+print(df_novo)
+
+# Exportar o DataFrame como uma tabela Excel
+nome_arquivo = 'tabela_excel.xlsx'
+df_novo.to_excel(nome_arquivo, index=False)
+
+print(f'Tabela exportada como "{nome_arquivo}"')
+
+
+------------------------------------------------
+  |   A |  B  |          C                     |
+------------------------------------------------
+0 | FMF | CaM | FEDERACAO MINEIRA DE FUTEBOL   |
+------------------------------------------------
+
