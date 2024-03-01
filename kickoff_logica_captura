@@ -85,3 +85,4 @@ print(f'Tabela exportada como "{nome_arquivo}"')
 
 
 # testar o plural wright.
+# Taipy x streamlit
